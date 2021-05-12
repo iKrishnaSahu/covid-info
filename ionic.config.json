@@ -1,5 +1,7 @@
 {
   "name": "covidinfo",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "angular"
 }

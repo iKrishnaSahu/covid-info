@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { DataService } from '../services/data/data.service';
 import _ from 'lodash';
 import * as moment from 'moment';
+import { Vibration } from '@ionic-native/vibration/ngx';
 
 @Component({
   selector: 'app-home',
@@ -15,7 +16,7 @@ export class HomePage {
   interval;
   updatedOn;
 
-  constructor(private dataService: DataService) { }
+  constructor(private dataService: DataService, private vibration: Vibration) { }
 
   startSearch() {
     this.interval = setInterval(() => this.getData(), 5000);
@@ -32,7 +33,7 @@ export class HomePage {
           _.forEach(centers, (center) => {
             const numberOfVaccineAvailable = this.getAvailableVaccineCount(center);
             if (numberOfVaccineAvailable > 0) {
-              this.playAudio();
+              this.playAudioAndVibrate();
             }
             this.availableVaccineHospitalList.push({ name: center.name, numberOfVaccineAvailable });
           });
@@ -40,14 +41,18 @@ export class HomePage {
     }
   }
 
-  playAudio() {
-    const audio = new Audio();
-    audio.src = '/assets/audio/ring.mp3';
-    audio.load();
-    audio.play();
-    setTimeout(() => {
-      audio.pause();
-    }, 5000);
+  playAudioAndVibrate() {
+    try {
+      const audio = new Audio();
+      audio.src = '/assets/audio/ring.mp3';
+      audio.load();
+      audio.play();
+      setTimeout(() => {
+        audio.pause();
+      }, 5000);
+      this.vibration.vibrate(1000);
+    }
+    catch (err) { }
   }
 
   getAvailableVaccineCount(center: any) {
