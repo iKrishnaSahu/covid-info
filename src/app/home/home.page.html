@@ -1,7 +1,7 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>
-      Blank
+      Vaccine availability
     </ion-title>
   </ion-toolbar>
 </ion-header>
@@ -9,12 +9,31 @@
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
+      <ion-title size="large">Vaccine availability</ion-title>
     </ion-toolbar>
   </ion-header>
 
-  <div id="container">
-    <strong>Ready to create an app?</strong>
-    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
+  <ion-item>
+    <ion-label position="fixed">Pincode</ion-label>
+    <ion-input [(ngModel)]="pincode"></ion-input>
+  </ion-item>
+
+  <div class="ion-text-center">
+    <ion-button color="primary" (click)="startSearch()" [disabled]="pincode.length < 6">Search</ion-button>
+    <ion-button color="secondary" (click)="stopSearch()" [disabled]="!interval">Stop</ion-button>
   </div>
+
+  <ng-container *ngIf="availableVaccineHospitalList.length > 0">
+    <div class="ion-text-center ion-padding" *ngIf="updatedOn">
+      Updated on - {{ updatedOn | date:'dd/MM/yyyy hh:mm:ss a'}}
+    </div>
+    <ion-card *ngFor="let item of availableVaccineHospitalList">
+      <ion-card-header>
+        {{ item.name }}
+      </ion-card-header>
+      <ion-card-content>
+        Available vaccines - {{ item.numberOfVaccineAvailable }}
+      </ion-card-content>
+    </ion-card>
+  </ng-container>
 </ion-content>
