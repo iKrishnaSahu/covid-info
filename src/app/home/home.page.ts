@@ -15,6 +15,7 @@ export class HomePage {
   availableVaccineHospitalList: { name: string; numberOfVaccineAvailable: number }[] = [];
   interval;
   updatedOn;
+  currentDate;
 
   constructor(private dataService: DataService, private vibration: Vibration) { }
 
@@ -24,12 +25,13 @@ export class HomePage {
 
   getData() {
     if (!_.isEmpty(this.pincode)) {
-      const currenDate = moment().format('DD-MM-YYYY');
-      this.dataService.getVaccineAvailability(this.pincode, currenDate)
+      this.currentDate = moment().add(1, 'day').format('DD-MM-YYYY');
+      this.dataService.getVaccineAvailability(this.pincode, this.currentDate)
         .then((data) => {
           this.updatedOn = moment().valueOf();
           this.availableVaccineHospitalList = [];
           const centers = data.centers as [];
+          console.log(centers);
           _.forEach(centers, (center) => {
             const numberOfVaccineAvailable = this.getAvailableVaccineCount(center);
             if (numberOfVaccineAvailable > 0) {

@@ -23,10 +23,14 @@
     <ion-button color="secondary" (click)="stopSearch()" [disabled]="!interval">Stop</ion-button>
   </div>
 
+  <div class="ion-text-center ion-padding" *ngIf="updatedOn">
+    Updated on - {{ updatedOn | date:'dd/MM/yyyy hh:mm:ss a'}}
+  </div>
+  <div class="ion-text-center ion-padding" *ngIf="currentDate">
+    Getting vaccine availability for - {{ currentDate }}
+  </div>
+
   <ng-container *ngIf="availableVaccineHospitalList.length > 0">
-    <div class="ion-text-center ion-padding" *ngIf="updatedOn">
-      Updated on - {{ updatedOn | date:'dd/MM/yyyy hh:mm:ss a'}}
-    </div>
     <ion-card *ngFor="let item of availableVaccineHospitalList">
       <ion-card-header>
         {{ item.name }}
