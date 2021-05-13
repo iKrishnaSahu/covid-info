@@ -10,7 +10,8 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "ba": "ionic cordova build android"
+    "ba": "ionic cordova build android",
+    "dp": "ng build --prod && firebase deploy"
   },
   "private": true,
   "dependencies": {
