@@ -3,6 +3,11 @@
     <ion-title>
       Vaccine availability
     </ion-title>
+    <ion-buttons slot="end">
+      <ion-button *ngIf="isFetching">
+        <ion-spinner slot="icon-only" name="lines"></ion-spinner>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
@@ -20,12 +25,13 @@
       <ion-button color="secondary" (click)="stopSearch()" [disabled]="!interval">Stop</ion-button>
     </div>
 
-    <span *ngIf="interval" class="ion-text-center ion-padding">
-      <div *ngIf="updatedOn">
+    <div class="ion-text-center">
+      <div *ngIf="interval && updatedOn">
         Updated on - {{ updatedOn | date:'dd/MM/yyyy hh:mm:ss a'}}
       </div>
-      <div *ngIf="currentDate">Getting vaccine availability for - {{ currentDate }}</div>
-    </span>
+      <div *ngIf="interval && today && tommorrow">Getting vaccine availability for - <br>{{ today + ' & ' + tommorrow }}
+      </div>
+    </div>
 
     <ng-container *ngIf="availableVaccineHospitalList.length > 0">
       <ion-card *ngFor="let item of availableVaccineHospitalList">
@@ -33,7 +39,12 @@
           {{ item.name }}
         </ion-card-header>
         <ion-card-content>
-          Available vaccines - {{ item.numberOfVaccineAvailable }}
+          <div *ngIf="item.numberOfVaccineAvailableToday !== undefined">
+            Available vaccines on {{ today }} - {{ item.numberOfVaccineAvailableToday }}
+          </div>
+          <div *ngIf="item.numberOfVaccineAvailableTommorow !== undefined">
+            Available vaccines on {{ tommorrow }} - {{ item.numberOfVaccineAvailableTommorow }}
+          </div>
         </ion-card-content>
       </ion-card>
     </ng-container>
@@ -41,7 +52,7 @@
     <ng-container *ngIf="availableVaccineHospitalList.length === 0 && interval">
       <ion-card class="ion-text-center">
         <ion-card-header>
-          No data found till now. Your data will update in every 5 seconds
+          No data found till now. We are checking for vaccine availability every 5 seconds.
         </ion-card-header>
       </ion-card>
     </ng-container>
